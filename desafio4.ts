@@ -1,18 +1,15 @@
 var apiKey = '3f301be7381a03ad8d352314dcc3ec1d';
-let moviesList = []
-let apiKeyHTML;
-let requestToken;
-let username;
-let password;
-let sessionId;
+let moviesList:any[];
+let apiKeyHTML: string;
+let requestToken: string;
+let username: string;
+let password: string;
+let sessionId: string;
 let listId = '7101979';
 
 let loginButton = (document.getElementById('login-button') as HTMLInputElement);
 let searchButton = (document.getElementById('search-button') as HTMLInputElement);
 let searchContainer = document.getElementById('search-container');
-searchButton.addEventListener('click', async (e) => {
-  console.log(e)
-})
 
 loginButton.addEventListener('click', async () => {
   await criarRequestToken();
@@ -110,7 +107,7 @@ class HttpClient {
   }
 }
 
-async function procurarFilme(query) {
+async function procurarFilme(query: string) {
   query = encodeURI(query)
   let result = await HttpClient.get({
     url: `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${query}`,
@@ -119,7 +116,7 @@ async function procurarFilme(query) {
   return result
 }
 
-async function adicionarFilme(filmeId) {
+async function adicionarFilme(filmeId: string) {
   let result = await HttpClient.get({
     url: `https://api.themoviedb.org/3/movie/${filmeId}?api_key=${apiKey}&language=en-US`,
     method: "GET"
@@ -155,7 +152,7 @@ async function criarSessao() {
   sessionId = result.session_id;
 }
 
-async function criarLista(nomeDaLista, descricao) {
+async function criarLista(nomeDaLista: string, descricao: string) {
   let result = await HttpClient.get({
     url: `https://api.themoviedb.org/3/list?api_key=${apiKey}&session_id=${sessionId}`,
     method: "POST",
@@ -168,7 +165,7 @@ async function criarLista(nomeDaLista, descricao) {
   console.log(result);
 }
 
-async function adicionarFilmeNaLista(filmeId, listaId) {
+async function adicionarFilmeNaLista(filmeId: string, listaId: string) {
   let result = await HttpClient.get({
     url: `https://api.themoviedb.org/3/list/${listaId}/add_item?api_key=${apiKey}&session_id=${sessionId}`,
     method: "POST",
